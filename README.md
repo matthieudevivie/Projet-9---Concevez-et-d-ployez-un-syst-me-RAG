@@ -30,7 +30,7 @@ Prérequis : Python 3.13, [uv](https://docs.astral.sh/uv/) et une clé d'API Ope
 (https://openrouter.ai/settings/keys).
 
 ```bash
-git clone https://github.com/matthieudevivie/puls-events-rag.git
+git clone https://github.com/matthieudevivie/Projet-9---Concevez-et-d-ployez-un-syst-me-RAG.git puls-events-rag
 cd puls-events-rag
 uv sync --locked              # installe exactement les versions de uv.lock
 cp .env.example .env          # puis renseigner OPENROUTER_API_KEY dans .env
