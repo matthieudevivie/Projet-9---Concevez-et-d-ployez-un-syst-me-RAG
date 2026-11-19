@@ -66,7 +66,11 @@ def verifier_openrouter() -> None:
         model=os.getenv("LLM_MODEL", "mistralai/mistral-small-2603"),
         temperature=0,
         max_tokens=10,
-        openrouter_provider={"only": ["mistral/eu"], "allow_fallbacks": False, "data_collection": "deny"},
+        openrouter_provider={
+            "order": ["mistral/eu"],  # l'Europe d'abord
+            "only": ["mistral/eu", "mistral/zdr"],  # repli possible, mais toujours Mistral, sans conservation
+            "data_collection": "deny",
+        },
     )
     reponse = llm.invoke("Réponds par un seul mot : prêt.")
     print(f"[ok] llm : {reponse.content!r}")
