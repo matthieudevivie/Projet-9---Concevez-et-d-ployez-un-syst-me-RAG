@@ -76,6 +76,3 @@ if __name__ == "__main__":
     verifier_imports()
     verifier_faiss()
     verifier_openrouter()
-
-mkdir scripts tests              # puis crée scripts/check_env.py avec le code ci-dessus
-uv run python scripts/check_env.py
