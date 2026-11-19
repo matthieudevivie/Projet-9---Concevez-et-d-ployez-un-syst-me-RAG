@@ -1,0 +1,24 @@
+[project]
+name = "puls-events-rag"
+version = "0.1.0"
+description = "POC d'assistant RAG de recommandation d'événements culturels (Puls-Events)"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "faiss-cpu>=1.16.0",
+    "langchain>=1.5.2",
+    "langchain-community>=0.4.2",
+    "langchain-openai>=1.8.3",
+    "langchain-openrouter>=0.3.0",
+    "langchain-text-splitters>=1.1.3",
+    "pandas>=3.1.1",
+    "python-dotenv>=1.2.4",
+    "requests>=2.34.2",
+]
+
+[dependency-groups]
+dev = [
+    "ipykernel>=7.4.0",
+    "pytest>=9.2.0",
+    "ruff>=0.17.5",
+]

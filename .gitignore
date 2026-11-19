@@ -1,0 +1,23 @@
+# Python-generated files
+__pycache__/
+*.py[oc]
+build/
+dist/
+wheels/
+*.egg-info
+
+# Virtual environments
+.venv
+
+# Secrets : la clé d'API ne doit jamais être commitée
+.env
+
+# Caches des outils
+.pytest_cache/
+.ruff_cache/
+.ipynb_checkpoints/
+.DS_Store
+
+# Contenus OpenClassrooms : restent sur le Mac, hors du livrable
+cours/
+instructions/
