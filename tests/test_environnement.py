@@ -21,6 +21,3 @@ def test_faiss_retrouve_le_plus_proche_voisin():
     _, voisins = index.search(vecteurs[2:3], 1)
     assert index.ntotal == 4
     assert voisins[0][0] == 2
-
-uv run pytest -v
-uv run ruff check .

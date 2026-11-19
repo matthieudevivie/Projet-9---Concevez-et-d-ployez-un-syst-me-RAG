@@ -1,0 +1,33 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  tests:
+    name: tests
+    runs-on: ubuntu-latest
+    steps:
+      - name: Récupérer le code
+        uses: actions/checkout@v7
+      - name: Installer uv
+        uses: astral-sh/setup-uv@v10.2.0
+        with:
+          enable-cache: true
+      - name: Installer Python et les dépendances (uv.lock)
+        run: uv sync --locked
+      - name: Vérifier que requirements.txt suit uv.lock
+        run: |
+          uv export --format requirements.txt --no-hashes --no-dev --quiet -o requirements.txt
+          git diff --exit-code requirements.txt
+      - name: Vérifier l'environnement
+        run: uv run python scripts/check_env.py
+      - name: Qualité du code
+        run: uv run ruff check .
+      - name: Lancer les tests
+        run: uv run pytest -v
