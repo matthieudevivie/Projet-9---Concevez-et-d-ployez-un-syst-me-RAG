@@ -51,7 +51,7 @@ pip install -r requirements.txt
   (paquet archivé depuis juin 2026, d'où un `DeprecationWarning` attendu).
 - Modèles : Mistral Small 4 (`mistralai/mistral-small-2603`) et `mistral-embed`,
   appelés par OpenRouter (`ChatOpenRouter`, `OpenAIEmbeddings` avec
-  `check_embedding_ctx_length=False`), point d'accès européen de Mistral imposé.
+  `check_embedding_ctx_length=False`), point d'accès européen de Mistral préféré, repli vers mistral/zdr.
   Changer `EMBEDDING_MODEL` impose de reconstruire l'index.
 - Après chaque `uv add`, régénérer `requirements.txt` :
   `uv export --format requirements.txt --no-hashes --no-dev -o requirements.txt`
