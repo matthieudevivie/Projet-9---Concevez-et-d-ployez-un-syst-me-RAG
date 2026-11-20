@@ -4,7 +4,7 @@ POC d'un chatbot qui répond aux questions sur les événements culturels à ven
 à partir des données publiques OpenAgenda, avec un système RAG
 (Retrieval-Augmented Generation) : LangChain, modèles Mistral (via OpenRouter) et Faiss.
 
-> État : étape 1 (environnement). Les étapes suivantes compléteront ce README.
+> État : étape 2 (collecte et nettoyage des données). Les étapes suivantes compléteront ce README.
 
 ## Objectifs
 
@@ -17,6 +17,8 @@ POC d'un chatbot qui répond aux questions sur les événements culturels à ven
 ## Structure du projet
 
 ```
+src/puls_events_rag/   le code du RAG (collecte, nettoyage…), installé comme paquet
+data/                  données téléchargées et nettoyées (non versionnées, voir plus bas)
 scripts/     scripts à lancer (vérification de l'environnement…)
 tests/       tests pytest
 pyproject.toml, uv.lock   dépendances (uv)
@@ -44,6 +46,22 @@ Sans uv :
 python3.13 -m venv .venv && source .venv/bin/activate
 pip install -r requirements.txt
 ```
+
+## Données
+
+Les événements viennent du jeu public OpenAgenda publié par OpenDataSoft
+(sans clé d'API). Zone : Nantes (code INSEE 44109) ; période : événements
+terminés depuis moins d'un an, en cours ou à venir, par rapport à une date de référence.
+
+```bash
+uv run python scripts/collecter_evenements.py --date-ref 2026-11-20
+```
+
+Le script écrit `data/brut_.json` (l'instantané brut), `data/evenements_nantes.jsonl`
+(un événement nettoyé par ligne) et `data/collecte.json` (date de référence et bilan
+du nettoyage). Règles : événements annulés, en ligne uniquement et doublons écartés,
+ainsi que trois agendas non culturels (voir `AGENDAS_EXCLUS` dans
+`src/puls_events_rag/nettoyage.py`).
 
 ## Notes de version
 

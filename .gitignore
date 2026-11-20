@@ -21,3 +21,6 @@ wheels/
 # Contenus OpenClassrooms : restent sur le Mac, hors du livrable
 cours/
 instructions/
+
+# Données téléchargées : se régénèrent avec scripts/collecter_evenements.py
+data/

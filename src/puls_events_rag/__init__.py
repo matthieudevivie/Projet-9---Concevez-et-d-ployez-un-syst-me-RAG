@@ -1,0 +1,1 @@
+"""Puls-Events : briques du RAG (collecte, nettoyage, index, chaîne)."""
