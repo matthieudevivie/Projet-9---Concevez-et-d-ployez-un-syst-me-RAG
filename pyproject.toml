@@ -5,6 +5,7 @@ description = "POC d'assistant RAG de recommandation d'événements culturels (P
 readme = "README.md"
 requires-python = ">=3.13"
 dependencies = [
+    "beautifulsoup4>=4.15.0",
     "faiss-cpu>=1.16.0",
     "langchain>=1.5.2",
     "langchain-community>=0.4.2",
@@ -22,3 +23,7 @@ dev = [
     "pytest>=9.2.0",
     "ruff>=0.17.5",
 ]
+
+[build-system]
+requires = ["uv_build>=0.11.3,<0.12"]
+build-backend = "uv_build"
