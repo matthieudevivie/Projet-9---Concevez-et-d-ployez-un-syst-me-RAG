@@ -7,10 +7,9 @@ from pathlib import Path
 
 import pandas as pd
 
+from puls_events_rag.chemins import COLLECTE, DONNEES, EVENEMENTS
 from puls_events_rag.nettoyage import nettoyer
 from puls_events_rag.openagenda import telecharger
-
-DOSSIER = Path("data")
 
 
 def main() -> None:
@@ -21,23 +20,22 @@ def main() -> None:
                         help="réutiliser un téléchargement déjà fait au lieu d'appeler l'API")
     args = parser.parse_args()
 
-    DOSSIER.mkdir(exist_ok=True)
+    DONNEES.mkdir(exist_ok=True)
     if args.brut:
         brut = json.loads(args.brut.read_text(encoding="utf-8"))
     else:
         brut = telecharger(args.date_ref)
-        chemin = DOSSIER / f"brut_{args.date_ref.isoformat()}.json"
+        chemin = DONNEES / f"brut_{args.date_ref.isoformat()}.json"
         chemin.write_text(json.dumps(brut, ensure_ascii=False), encoding="utf-8")
         print(f"instantané brut : {chemin}")
 
     propres, bilan = nettoyer(pd.DataFrame(brut), args.date_ref)
-    sortie = DOSSIER / "evenements_nantes.jsonl"
-    propres.to_json(sortie, orient="records", lines=True, force_ascii=False, date_format="iso")
+    propres.to_json(EVENEMENTS, orient="records", lines=True, force_ascii=False, date_format="iso")
     collecte = {"date_ref": args.date_ref.isoformat(), "bilan": bilan}
-    (DOSSIER / "collecte.json").write_text(json.dumps(collecte, ensure_ascii=False, indent=2), encoding="utf-8")
+    COLLECTE.write_text(json.dumps(collecte, ensure_ascii=False, indent=2), encoding="utf-8")
     for raison, nombre in bilan.items():
         print(f"{raison:>28} : {nombre}")
-    print(f"écrit : {sortie} et {DOSSIER / 'collecte.json'}")
+    print(f"écrit : {EVENEMENTS} et {COLLECTE}")
 
 
 if __name__ == "__main__":
