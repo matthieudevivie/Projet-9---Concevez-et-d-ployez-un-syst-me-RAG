@@ -57,11 +57,29 @@ terminés depuis moins d'un an, en cours ou à venir, par rapport à une date de
 uv run python scripts/collecter_evenements.py --date-ref 2026-11-20
 ```
 
-Le script écrit `data/brut_.json` (l'instantané brut), `data/evenements_nantes.jsonl`
+Le script écrit `data/brut_<date>.json` (l'instantané brut), `data/evenements_nantes.jsonl`
 (un événement nettoyé par ligne) et `data/collecte.json` (date de référence et bilan
 du nettoyage). Règles : événements annulés, en ligne uniquement et doublons écartés,
 ainsi que trois agendas non culturels (voir `AGENDAS_EXCLUS` dans
 `src/puls_events_rag/nettoyage.py`).
+
+## Index vectoriel
+
+Chaque événement devient un ou plusieurs chunks (1 000 caractères de description,
+150 de chevauchement), tous précédés d'un en-tête : titre, lieu, horaires, mots-clés.
+Les chunks sont vectorisés avec `mistral-embed` (1 024 dimensions, via OpenRouter)
+et indexés dans Faiss (`IndexFlatL2`, recherche exacte), avec leurs métadonnées
+(identifiant, dates, lieu, lien).
+
+```bash
+uv run python scripts/construire_index.py --estimer
+uv run python scripts/construire_index.py
+uv run python scripts/tester_recherche.py "un concert de jazz"
+```
+
+La première commande affiche le découpage et le coût estimé sans appeler l'API ;
+la deuxième construit `data/index_faiss/` (environ 0,26 $ pour Nantes) ;
+la troisième affiche les événements les plus proches d'une question.
 
 ## Notes de version
 
