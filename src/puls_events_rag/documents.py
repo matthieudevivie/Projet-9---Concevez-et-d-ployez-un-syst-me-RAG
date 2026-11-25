@@ -4,7 +4,7 @@ from langchain_core.documents import Document
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 
 TAILLE_CHUNK = 1000  # caractères de description par chunk (l'en-tête s'y ajoute)
-CHEVAUCHEMENT = 150  # caractères répétés d'un chunk au suivant
+CHEVAUCHEMENT = 150  # au plus, caractères repris d'un chunk au suivant (0 si la coupure tombe entre deux paragraphes)
 
 
 def entete(ev: dict) -> str:

@@ -67,9 +67,14 @@ def test_periode_moins_d_un_an(evenements):
 @sans_index
 def test_tous_les_evenements_sont_indexes(evenements, index):
     infos = json.loads((INDEX / "infos.json").read_text(encoding="utf-8"))
-    if infos["evenements"] != len(evenements):
-        pytest.skip(f"index d'essai ({infos['evenements']} événements) : relancer sans --limite")
-    assert uids_indexes(index) == set(evenements["uid"])
+    date_collecte = json.loads(COLLECTE.read_text(encoding="utf-8"))["date_ref"]
+    assert infos["date_ref_collecte"] == date_collecte, (
+        f"index construit sur la collecte du {infos['date_ref_collecte']}, données du {date_collecte} : "
+        "relancer scripts/construire_index.py")
+    attendus = set(evenements["uid"].iloc[:infos["evenements"]])  # --limite N indexe les N premiers
+    assert uids_indexes(index) == attendus, "l'index ne correspond plus aux événements : relancer scripts/construire_index.py"
+    if infos["evenements"] < len(evenements):
+        pytest.skip(f"index d'essai ({infos['evenements']} événements sur {len(evenements)}) : relancer sans --limite")
 
 
 @sans_index

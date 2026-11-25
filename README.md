@@ -66,7 +66,8 @@ ainsi que trois agendas non culturels (voir `AGENDAS_EXCLUS` dans
 ## Index vectoriel
 
 Chaque événement devient un ou plusieurs chunks (1 000 caractères de description,
-150 de chevauchement), tous précédés d'un en-tête : titre, lieu, horaires, mots-clés.
+coupés de préférence entre deux paragraphes ; jusqu'à 150 caractères repris d'un chunk
+au suivant quand un paragraphe doit être coupé), tous précédés d'un en-tête : titre, lieu, horaires, mots-clés.
 Les chunks sont vectorisés avec `mistral-embed` (1 024 dimensions, via OpenRouter)
 et indexés dans Faiss (`IndexFlatL2`, recherche exacte), avec leurs métadonnées
 (identifiant, dates, lieu, lien).
