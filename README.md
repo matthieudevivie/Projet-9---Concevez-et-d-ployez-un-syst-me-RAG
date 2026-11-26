@@ -4,7 +4,7 @@ POC d'un chatbot qui répond aux questions sur les événements culturels à ven
 à partir des données publiques OpenAgenda, avec un système RAG
 (Retrieval-Augmented Generation) : LangChain, modèles Mistral (via OpenRouter) et Faiss.
 
-> État : étape 2 (collecte et nettoyage des données). Les étapes suivantes compléteront ce README.
+> État : étape 4 (chaîne RAG). Les étapes suivantes compléteront ce README.
 
 ## Objectifs
 
@@ -81,6 +81,27 @@ uv run python scripts/tester_recherche.py "un concert de jazz"
 La première commande affiche le découpage et le coût estimé sans appeler l'API ;
 la deuxième construit `data/index_faiss/` (environ 0,26 $ pour Nantes) ;
 la troisième affiche les événements les plus proches d'une question.
+
+## Chaîne RAG
+
+Pour chaque question, `AssistantRAG` (`src/puls_events_rag/rag.py`) :
+
+1. cherche dans Faiss les chunks les plus proches, ne garde que les événements
+   qui ne sont pas terminés à la date du jour, et un seul chunk par événement (5 événements) ;
+2. les numérote dans le prompt (`src/puls_events_rag/prompt.py`), avec des consignes :
+   répondre uniquement à partir des extraits, citer leurs numéros, dire
+   « Je n'ai pas trouvé d'événement correspondant dans l'agenda. » plutôt qu'inventer ;
+3. fait rédiger la réponse par Mistral Small 4 (température 0) et rend les sources citées.
+
+```bash
+uv run python scripts/demander.py
+uv run python scripts/demander.py --prompt "un concert de jazz ce week-end"
+uv run python scripts/demander.py --date 2026-11-20 "que faire avec des enfants ?"
+```
+
+Sans argument, le script joue cinq scénarios (question précise, public, période,
+question sans réponse, hors sujet). `--prompt` affiche le prompt complet,
+`--date` simule la date du jour pour rejouer un test.
 
 ## Notes de version
 
